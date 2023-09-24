@@ -1,12 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-struct lista
-{
-    int info;
-    struct lista *prox;
-};
-typedef struct lista Lista;
+#include "lista.h"
 
 Lista *lista_cria()
 {
@@ -122,22 +117,4 @@ Lista *concatena(Lista *l1, Lista *l2)
     p->prox = l2;
 
     return l1;
-}
-
-int main()
-{
-    Lista *l = lista_cria();
-    Lista *l2 = lista_cria();
-    l = lista_insere(l, 28);
-    l = lista_insere(l, 15);
-    l = lista_insere(l, 30);
-
-    l2 = lista_insere(l2, 50);
-    l2 = lista_insere(l2, 21);
-    l2 = lista_insere(l2, 22);
-    lista_imprime(l);
-
-    printf("%d\n", comprimento(l));
-    printf("%d\n", maiores(l, 20));
-    lista_imprime(concatena(l, l2));
 }
