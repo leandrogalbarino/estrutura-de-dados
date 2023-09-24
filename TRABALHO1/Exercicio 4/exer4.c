@@ -83,13 +83,13 @@ void solicita_dimencoes(int *i, int *j, int *k)
 {
 
     printf("DIGITE O NUMERO DE LINHAS:");
-    scanf("%d", &i);
+    scanf("%d", i);
 
     printf("DIGITE O NUMERO DE COLUNAS:");
-    scanf("%d", &j);
+    scanf("%d", j);
 
     printf("DIGITE O NUMERO DA PROFUNDIDADE:");
-    scanf("%d", &k);
+    scanf("%d", k);
 }
 
 int main()
