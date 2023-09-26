@@ -1,2 +1,9 @@
 # Estrutura-de-Dados
- Trabalhos e exercícios de Estrutura de Dados
+ **TRABALHOS E EXERCICIOS DE ESTRUTURA DE DADOS**
+
+### **CONTEUDOS VISTOS ATÉ AGORA**
+
+- [X] ALOCACAO DINAMICA DE MEMORIA
+- [X] LISTAS
+- [X] FILAS
+- [X] PILHAS
