@@ -9,15 +9,6 @@ struct lista
 };
 typedef struct lista Lista;
 
-Lista *empilhar(Lista *l, char data)
-{
-    Lista *novo = (Lista *)malloc(sizeof(Lista));
-    if (novo == NULL)
-        exit(1);
-    novo->data = data;
-    novo->prox = l;
-    return novo;
-}
 Lista *desempilhar(Lista *l)
 {
     Lista *p = l->prox;
@@ -33,6 +24,16 @@ int lista_vazia(Lista *l)
         return 0;
 }
 
+Lista *empilhar(Lista *l, char data)
+{
+    Lista *novo = (Lista *)malloc(sizeof(Lista));
+    if (novo == NULL)
+        exit(1);
+    novo->data = data;
+    novo->prox = l;
+    return novo;
+}
+
 // IMPLEMENTADA NA HORA DA PROVA;
 int testa_Parenteces(char *expressao)
 {
@@ -40,7 +41,7 @@ int testa_Parenteces(char *expressao)
     int i;
     for (i = 0; i < strlen(expressao); i++)
     {
-        if (expressao[i] == '(')
+        if ((expressao[i] == '(') || (expressao[i] == ')'))
         {
             l = empilhar(l, expressao[i]);
         }
