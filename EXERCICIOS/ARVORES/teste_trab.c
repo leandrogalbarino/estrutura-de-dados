@@ -36,47 +36,15 @@ int quant_de_nos(Heap *raiz)
     int somador = 0;
     if (raiz == NULL)
         return 0;
-    if(raiz->direita != NULL)
-        somador++;
-    if(raiz->esquerda != NULL)
-        somador++;    
+    somador++;
     somador += quant_de_nos(raiz->esquerda);
     somador += quant_de_nos(raiz->direita);
 
     return somador;
 }
-Heap *fila_prio_inserir(Heap *raiz, int prioridade, int dado)
+
+Heap *ordena_heap(Heap *raiz)
 {
-    // SE A ARVORE NAO TIVER ELEMENTOS RETORNA NOVO COMO A RAIZ DA ARVORE
-    if (raiz == NULL)
-    {
-        Heap *novo = insere_na_fila(prioridade, dado);
-        return novo;
-    }
-
-    // SE TIVER NULO AS DUAS, INSERE NA ESQUERDA PRIMEIRO
-    if (raiz->esquerda == NULL)
-    {
-        raiz->esquerda = fila_prio_inserir(raiz->esquerda, prioridade, dado);
-    }
-    // SE TIVER ESQUERDA != E DIREITA == NULO
-    else if (raiz->direita == NULL)
-    {
-        raiz->direita = fila_prio_inserir(raiz->direita, prioridade, dado);
-    }
-    // SE TIVER DOIS FILHOS
-    else
-    {
-        // MUDAR A IMPLEMNTACAO DE ADICIONAR O PROXIMO NO ANALISAR A QUANTIDADE DE NOS
-        // FAZER UM CONTAGEM DE NOS NA ESQUERDA -> NA PARTE ESQUERDA E NA PARTE DIREITA
-        
-        if (quant_de_nos(raiz->direita) < quant_de_nos(raiz->esquerda))
-            raiz->direita = fila_prio_inserir(raiz->direita, prioridade, dado);
-        else{
-            raiz->esquerda = fila_prio_inserir(raiz->esquerda, prioridade, dado);
-        }
-    }
-
     if (raiz->esquerda != NULL && raiz->esquerda->info.prioridade > raiz->info.prioridade)
     {
         Informacoes temp = raiz->info;
@@ -90,6 +58,36 @@ Heap *fila_prio_inserir(Heap *raiz, int prioridade, int dado)
         raiz->info = raiz->direita->info;
         raiz->direita->info = temp;
     }
+    return raiz;
+}
+
+Heap *fila_prio_inserir(Heap *raiz, int prioridade, int dado)
+{
+    if (raiz == NULL)
+    {
+        Heap *novo = insere_na_fila(prioridade, dado);
+        return novo;
+    }
+
+    if (raiz->esquerda == NULL)
+        raiz->esquerda = fila_prio_inserir(raiz->esquerda, prioridade, dado);
+
+    else if (raiz->direita == NULL)
+        raiz->direita = fila_prio_inserir(raiz->direita, prioridade, dado);
+
+    else
+    {
+        if (quant_de_nos(raiz->direita) == quant_de_nos(raiz->esquerda))
+            raiz->esquerda = fila_prio_inserir(raiz->esquerda, prioridade, dado);
+
+        else if (quant_de_nos(raiz->esquerda->esquerda) != quant_de_nos(raiz->esquerda->direita))
+            raiz->esquerda = fila_prio_inserir(raiz->esquerda, prioridade, dado);
+
+        else
+            raiz->direita = fila_prio_inserir(raiz->direita, prioridade, dado);
+    }
+
+    raiz = ordena_heap(raiz);
 
     return raiz;
 }
@@ -98,32 +96,22 @@ void fila_prio_imprime(Heap *a)
 {
     if (a != NULL)
     {
-        printf("PAI :%d\n|", a->info.prioridade);
+        printf("No %d:", a->info.prioridade);
         if (a->esquerda != NULL && a->direita != NULL)
-        {
-            printf("FILHOS:%d, %d\n\n\n", a->esquerda->info.prioridade, a->direita->info.prioridade);
-            fila_prio_imprime(a->esquerda);
-            fila_prio_imprime(a->direita);
-        }
+            printf("Filho esq:%d | Filho dir:%d\n", a->esquerda->info.prioridade, a->direita->info.prioridade);
+
         else if (a->direita == NULL && a->esquerda != NULL)
-        {
-            printf("FILHO:%d\n\n\n", a->esquerda->info.prioridade);
-            fila_prio_imprime(a->esquerda);
-        }
-        else if (a->esquerda == NULL && a->direita != NULL)
-        {
-            printf("FILHO:%d\n\n\n", a->direita->info.prioridade);
-            fila_prio_imprime(a->direita);
-        }
+            printf("Filho esq:%d | Filho dir: NULL\n", a->esquerda->info.prioridade);
         else
-        {
-            printf("SEM FILHOS\n\n\n");
-        }
+            printf("Filho esq:NULL | Filho dir: NULL\n");
+        printf("\n");
+        fila_prio_imprime(a->esquerda);
+        fila_prio_imprime(a->direita);
     }
 }
 int main()
 {
-    Heap *a = NULL;
+    Heap *a = heap_cria_vazia();
     a = fila_prio_inserir(a, 7, 10);
     a = fila_prio_inserir(a, 2, 10);
     a = fila_prio_inserir(a, 3, 10);
@@ -135,8 +123,6 @@ int main()
     a = fila_prio_inserir(a, 211, 10);
     a = fila_prio_inserir(a, 251, 10);
     a = fila_prio_inserir(a, 231, 10);
-
-    // fila_prio_inserir(a, 13, 10);
-
+    a = fila_prio_inserir(a, 20, 10);
     fila_prio_imprime(a);
 }
